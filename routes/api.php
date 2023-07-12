@@ -28,12 +28,16 @@ Route::middleware('auth:sanctum')->group(function(){
 Route::get('users',[AuthController::class,'users']);
 
 Route::post('signup',[UserController::class,'register']);
+Route::post('login',[UserController::class,'login']);
+
 
 Route::get('patients',[PatientController::class,'all']);
 Route::controller(VisitController::class)->group(function(){
     Route::post('visit','storeV');
     Route::get('visit','all');
+    Route::get('visits/{id}','histry');
 });
+
 Route::controller(PatientController::class)->group(function(){
     Route::get('patients','all');
     Route::post('patients','creat');

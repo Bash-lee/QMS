@@ -348,21 +348,32 @@ class VisitController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
+          $histry = $visits->map(function($visits,$key){
+            return[
+                    'visit_order' =>$visits->visit_order,
+                    'station' => $visits->station->station_name_th,
+                    'date' => $visits->created_at
+            ];
+          });
+
         if ($visits) {
             $patient = Patient::where('user_id', $id)->first();
 
-            return view('visits.history')
-                ->with([
-                    'visits' => $visits,
-                    'patient' => $patient,
-
-                ]);
+            return response()->json([
+                'status'=>"OK",
+                'visits'=>$histry
+            ],200);
 
         }
 
-
-        return back();
     }
+
+
+
+
+
+
+
 
     /**
      * Show the form for editing the specified resource.

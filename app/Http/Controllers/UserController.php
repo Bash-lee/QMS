@@ -105,6 +105,29 @@ class UserController extends Controller
         }
 
     }
+    public function login(Request $request){
+
+        $formFields = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => 'required'
+         ]);
+
+         if(auth()->attempt($formFields)){
+            $user = User::where('email', $request->input('email'))->first();
+            return response()->json([
+                'message'=>"user logged in",
+                'data'=>$user
+            ],200);
+         }
+
+          return response()->json([
+            'status'=>422,
+            'errors'=>"invalid credentials"
+
+        ],422); ;
+
+
+    }
 
     /**
      * Display the specified resource.
